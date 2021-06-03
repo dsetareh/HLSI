@@ -153,6 +153,28 @@ var conf = {
     // initial gain variable value
     gn_init: 0.0,
   },
+  noise: {
+    // Dummy signal to act as noise floor
+    mcs_init: 2, // unused
+
+    freq_min: 1780.0e6, // unused
+    freq_max: 1820.0e6, // unused
+    freq_plot_min: 1780.0e6, // unused
+    freq_plot_max: 1820.0e6, // unused
+    freq_step: 0.01e6, // unused
+    freq_init: 1800.0e6, // unused
+
+    bw_min: 400.0e6, // unused
+    bw_max: 4000.0e6, // unused
+    bw_step: 0.01e6, // unused
+    bw_init: 4000.0e6, // unused
+
+    gn_min: -30.0,
+    gn_max: 0.0,
+    gn_step: 0.01,
+    gn_scale: 1.0,
+    gn_init: 0.0,
+  },
 };
 
 // We'll make sure we keep all conf data constant.
@@ -276,6 +298,18 @@ function Signal(sig, name = "") {
   obj.addSetterCallback = function (key, callback) {
     if (typeof obj._callbacks[key] !== "undefined")
       obj._callbacks[key].push(callback);
+  };
+
+  // TODO: implementation of this calculation to update a display
+  obj.computeSNR = function (noise, signals = []) {
+    signals.forEach(function (sig) {
+      // TODO: Support for more than 1 signal
+      alert("FIXTHIS");
+    });
+    // calculate slider percentage [0.0f - 1.0f]
+    let bwPercentage = (obj._bw - obj.bw_min) / (obj.bw_max - obj.bw_min);
+    // signal gain - (division, db is log scale) noise floor - 10 * log_10 (bandwidth SLIDER %, from above)
+    return obj._gn - noise.gn - 10 * Math.log10(bwPercentage);
   };
 
   obj.getBits = function (
