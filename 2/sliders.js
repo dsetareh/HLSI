@@ -23,7 +23,7 @@ function Slider(sig, parameter, n = null) {
   {
     let gotPar = false;
 
-    ["freq", "bw", "gn", "mcs"].forEach(function (par) {
+    ["freq", "bw", "gn", "mcs", "noise"].forEach(function (par) {
       if (parameter === par) {
         gotPar = true;
         return;
@@ -157,6 +157,9 @@ function Slider(sig, parameter, n = null) {
           conf.schemes[val].name + " (" + conf.schemes[val].rate + " b/s/Hz)"
         );
       });
+      break;
+    case "noise": // noise floor
+      makeSlider(sig, n, "Noise", "gn", 0.1, " dB/Hz");
       break;
     default:
       // This should not happen.
