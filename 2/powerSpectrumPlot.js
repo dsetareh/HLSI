@@ -2,26 +2,27 @@
 
 // TODO:
 //
-//   1. We need to draw a "noise floor".  Currently there is none.
-//      Maybe one of the interferer signals can be the noise floor.
-//
-//   2. We need to find the axis vertical scale based on all the signals
+//   1. We need to find the axis vertical scale based on all the signals
 //      gn_min and gn_max.
 //
 
 // This function does not expose/return any object or other functions.
 // Yes, it's magic.
 //
+// Generates a Power Spectrum Plot with one or more signals
+// and an optional noise floor, represented by a signal
 //
 // Function Parameters
 //
-//   sig: is a signal or array of signals
-//
-//   parentElement: is a CSS selector for the parent node that we will
-//        append the d3 <svg> plot element to.
 //
 //
-function PowerSpectrumPlot(sigs, parentElement = null) {
+//   sigs: is a signal or array of signals
+//
+//   noise (optional): a signal object whos gain value controls the noise floor
+//                     if not given, generate(null) defaults to -120db floor
+//
+//
+function PowerSpectrumPlot(sigs, noise) {
   if (!Array.isArray(sigs)) sigs = [sigs];
   if (sigs.length < 1) return;
 
@@ -42,17 +43,20 @@ function PowerSpectrumPlot(sigs, parentElement = null) {
     sig.addSetterCallback("gn", update_plot);
   });
 
-  // options
+  // add callback for updating to changes in the gain of the noise 'signal'
+  if (noise !== undefined) {
+    noise.addSetterCallback("gn", update_plot);
+  }
 
-  // filter semi-length, over-sampling rate, total length
+  // filter semi-length(m), over-sampling rate(k), total length
   const m = 40,
     k = 20,
     n = 2 * k * m + 1;
   var bw = 0.2,
-    gn = 0.0;
+    gn = 0.0; // bandwidth, gain
   var nfft = 2048,
     generator = new siggen(nfft);
-  generator.m = m;
+  generator.m = m; // note that increasing m will square off the signal
 
   // determine time and frequency scale/units
   var [scale_freq, units_freq] = scale_units(
@@ -88,7 +92,7 @@ function PowerSpectrumPlot(sigs, parentElement = null) {
   });
 
   // create SVG objects
-  var svgf = svg_create(fScale, pScale, parentElement);
+  var svgf = svg_create(fScale, pScale, null); // ! null was formerly parentElement
 
   var labelPrefix = "";
   // TODO: This prefix label needs fixing so it works well for all the
@@ -133,11 +137,14 @@ function PowerSpectrumPlot(sigs, parentElement = null) {
       // generate power spectral density
       generator.add_signal(fc, bw, gn + 10 * Math.log10(bw));
     });
-
-    generator.generate();
+    // use custom noise floor if given
+    if (noise !== undefined) generator.generate(noise.gn);
+    // else default noise floor is used (-120)
+    else generator.generate();
     dataf = d3.range(0, nfft - 1).map(function (i) {
       return { y: generator.psd[i] };
     });
+
     pathf.datum(dataf).attr("d", linef);
   }
 
