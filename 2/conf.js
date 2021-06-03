@@ -73,13 +73,13 @@ var conf = {
     bw_min: 4.0e6,
     bw_max: 40.0e6,
     bw_step: 0.01e6,
-    bw_init: 8.0e6,
+    bw_init: 4.0e6,
 
-    gn_min: -30.0,
+    gn_min: -20.0,
     gn_max: 0.0,
     gn_step: 0.01,
     gn_scale: 1.0,
-    gn_init: 0.0,
+    gn_init: -10.0,
   },
 
   // We figure there will not be more than 8 or so signals, so names
@@ -169,11 +169,11 @@ var conf = {
     bw_step: 0.01e6, // unused
     bw_init: 4000.0e6, // unused
 
-    gn_min: -30.0,
+    gn_min: -40.0,
     gn_max: 0.0,
     gn_step: 0.01,
     gn_scale: 1.0,
-    gn_init: 0.0,
+    gn_init: -30.0,
   },
 };
 
