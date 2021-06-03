@@ -67,7 +67,7 @@ var conf = {
     freq_max: 1820.0e6,
     freq_plot_min: 1780.0e6,
     freq_plot_max: 1820.0e6,
-    freq_step: 0.01e6,
+    freq_step: 0.1e6,
     freq_init: 1800.0e6,
 
     bw_min: 4.0e6,
@@ -147,7 +147,7 @@ var conf = {
     //
     // The step size that we allow the user to change the sig1 gain
     // with the slider.
-    gn_step: 0.01,
+    gn_step: 0.1,
     // gn_scale is used to display the value of the "gn" variable.
     gn_scale: 1.0,
     // initial gain variable value
