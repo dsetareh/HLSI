@@ -8,6 +8,7 @@
     <script src=../fft.js></script>
     <script src=support.js></script>
     <script src=sliders.js></script>
+    <script src=label.js></script>
     <script src=powerSpectrumPlot.js></script>
     <script src=iqPlot.js></script>
     <script src=spectralEfficiencyPlot.js></script>
@@ -33,7 +34,12 @@ Slider(sig1, 'freq'); // frequency
 Slider(sig1, 'bw'); // bandwidth
 Slider(sig1, 'gn'); // gain
 
+
 Slider(noise, 'noise'); // noise floor slider (gain slider for the noise 'signal')
+
+// testing labels here
+Label(sig1, noise, "SNR");
+
 
 PowerSpectrumPlot(sig1, noise);
 

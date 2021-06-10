@@ -309,7 +309,7 @@ function Signal(sig, name = "") {
     // calculate slider percentage [0.0f - 1.0f]
     let bwPercentage = (obj._bw - obj.bw_min) / (obj.bw_max - obj.bw_min);
     // signal gain - (division, db is log scale) noise floor - 10 * log_10 (bandwidth SLIDER %, from above)
-    return obj._gn - noise.gn - 10 * Math.log10(bwPercentage);
+    return obj._gn - noise._gn - 10 * Math.log10(bwPercentage);
   };
 
   obj.getBits = function (
