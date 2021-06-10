@@ -21,17 +21,18 @@ function Label(sig, noise, value, n = null) {
   // TODO: or maybe set an entire signal to 'watched'
 
   //TODO: allow for dynamic linking to signals or variables that need to be 'watched' for updates
-  sig.addSetterCallback("gn", function (sig, val) {
+  //TODO: just pass in a string array? ["gn", "bw", "noise?"]
+  sig.addSetterCallback("gn", function (sigs, val) {
     let bwPercentage = (sig._bw - sig.bw_min) / (sig.bw_max - sig.bw_min);
     n.value = sig._gn - noise._gn - 10 * Math.log10(bwPercentage); // ! implementation...
   });
 
-  sig.addSetterCallback("bw", function (sig, val) {
+  sig.addSetterCallback("bw", function (sigs, val) {
     let bwPercentage = (sig._bw - sig.bw_min) / (sig.bw_max - sig.bw_min);
     n.value = sig._gn - noise._gn - 10 * Math.log10(bwPercentage); // ! implementation...
   });
 
-  noise.addSetterCallback("gn", function (sig, val) {
+  noise.addSetterCallback("gn", function (sigs, val) {
     let bwPercentage = (sig._bw - sig.bw_min) / (sig.bw_max - sig.bw_min);
     n.value = sig._gn - noise._gn - 10 * Math.log10(bwPercentage); // ! implementation...
   });
